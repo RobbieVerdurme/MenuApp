@@ -1,63 +1,70 @@
 package com.example.boeferrob.menuapp.activities
 
+import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import com.example.boeferrob.menuapp.R
+import com.example.boeferrob.menuapp.fragments.BaseFragment
+import com.example.boeferrob.menuapp.fragments.DecideFragment
+import com.example.boeferrob.menuapp.fragments.FoodListFragment
+import com.example.boeferrob.menuapp.network.DataManager
 import kotlinx.android.synthetic.main.main_layout.*
-import java.util.logging.Logger
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionListener, FoodListFragment.OnFragmentInteractionListener{
+    /************************************************variablen*********************************************************/
 
 
+    /************************************************Override**********************************************************/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
-        Logger.addLogAdapter(AndroidLogAdapter())
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        DataManager.save(this)
+        DataManager.getData(this)
     }
 
     override fun onStart() {
         super.onStart()
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navigation_home -> {
-                    viewpager_main.currentItem = BaseFragment
+                R.id.navigation_decider -> {
+                    viewpager_main.currentItem = BaseFragment.DECIDE
                     true
                 }
-                R.id.navigation_dashboard -> {
-
-                    true
-                }
-                R.id.navigation_notifications -> {
-
+                R.id.navigation_recipeList -> {
+                    viewpager_main.currentItem = BaseFragment.FOODLIST
                     true
                 }
                 else ->{
-
+                    viewpager_main.currentItem = BaseFragment.DECIDE
                     true
                 }
             }
         }
-    }
 
-    viewpager_main.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
-        override fun getItem(p0: Int): Fragment {
-            when(p0){
-                /*
-                BaseFragment.AIRPORTS -> return AirportsFragment.newInstance()
-                BaseFragment.RAW -> return RawFragment.newInstance()
-                BaseFragment.DETAILS -> return DetailsFragment.newInstance()
-                BaseFragment.OLD -> return OldmetarsFragment.newInstance()
-                */
+        viewpager_main.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
+            override fun getItem(p0: Int): Fragment {
+                when(p0){
+                    BaseFragment.DECIDE -> return DecideFragment.newInstance()
+                    BaseFragment.FOODLIST -> return FoodListFragment.newInstance()
+                }
+                return DecideFragment()
             }
-            return //AirportsFragment() return  standaard fragment ?
-        }
 
-        override fun getCount(): Int {
-            return 4
+            override fun getCount(): Int {
+                return 2
+            }
         }
     }
+
+    override fun onFragmentInteraction(uri: Uri) {}
+
+    override fun onStop() {
+        super.onStop()
+        DataManager.save(this)
+        navigation.setOnNavigationItemReselectedListener(null)
+    }
+
+    /************************************************Methods***********************************************************/
 }

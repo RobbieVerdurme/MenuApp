@@ -1,6 +1,8 @@
 package com.example.boeferrob.menuapp
 
-data class Food(var name: String, var ingredients: MutableList<Ingredient>, var discritpion: String) {
+import java.io.Serializable
+
+data class Food(var name: String, var ingredients: MutableList<Ingredient>, var discritpion: String) : Serializable {
     override fun toString(): String {
         return name
     }

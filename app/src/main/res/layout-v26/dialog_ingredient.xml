@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <EditText
+            android:layout_width="74dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/txtquantity"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerMeasurement" android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/btnCancel"
+            android:hint="@string/quantity" app:layout_constraintHorizontal_bias="0.6" android:autofillHints=""/>
+    <Spinner
+            android:layout_width="111dp"
+            android:layout_height="40dp"
+            android:id="@+id/spinnerMeasurement" app:layout_constraintStart_toEndOf="@+id/txtquantity"
+            android:layout_marginStart="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@+id/txtName"
+            android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnCancel"/>
+    <EditText
+            android:layout_width="111dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/txtName" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/spinnerMeasurement"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.875" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSave" android:hint="@string/name" android:inputType="text"
+            android:autofillHints=""/>
+    <Button
+            android:text="@string/save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSave" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/txtName"
+            app:layout_constraintStart_toEndOf="@+id/btnCancel" android:layout_marginStart="8dp"/>
+    <Button
+            android:text="@string/cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCancel" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/txtquantity"
+            app:layout_constraintEnd_toStartOf="@+id/btnSave" android:layout_marginEnd="8dp"/>
+</android.support.constraint.ConstraintLayout>

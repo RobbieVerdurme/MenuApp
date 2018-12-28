@@ -7,7 +7,8 @@ import java.io.*
 import java.util.ArrayList
 
 object DataManager {
-    var foodList :MutableList<Food> = ArrayList<Food>()
+    var foodList :MutableList<Food> = ArrayList<Food>() as MutableList<Food>
+    lateinit var file: File
 
     init {
         //makeFakeFood()
@@ -61,14 +62,18 @@ object DataManager {
         foodList.add(food)
     }
 
-    fun save(context: Context){
-        var file = File(context.filesDir.toString() + "/" +  "test")
+    fun createFile(context: Context){
+        file = File(context.filesDir.toString() + "/" +  "MenuApp")
+        save()
+        getData()
+    }
+
+    fun save(){
         var fileoutputstream = FileOutputStream(file)
         ObjectOutputStream(fileoutputstream).writeObject(foodList)
     }
 
-    fun getData(context : Context){
-        var file = File(context.filesDir.toString() + "/" +  "test")
+    fun getData(){
         var fileInputstream = FileInputStream(file)
         var objectoutputstream = ObjectInputStream(fileInputstream)
         foodList = objectoutputstream.readObject() as ArrayList<Food>

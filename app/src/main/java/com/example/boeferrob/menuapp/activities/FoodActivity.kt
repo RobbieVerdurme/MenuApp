@@ -56,6 +56,7 @@ class FoodActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         saveFood()
+        DataManager.save()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -66,11 +67,6 @@ class FoodActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         listFoodIngredients.adapter?.notifyDataSetChanged()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        DataManager.save(this)
     }
 
     /************************************************Methods***********************************************************/

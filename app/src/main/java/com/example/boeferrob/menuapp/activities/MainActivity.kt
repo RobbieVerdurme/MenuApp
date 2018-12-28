@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
-        DataManager.save(this)
-        DataManager.getData(this)
+        DataManager.createFile(this)
     }
 
     override fun onStart() {
@@ -62,8 +61,12 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
 
     override fun onStop() {
         super.onStop()
-        DataManager.save(this)
         navigation.setOnNavigationItemReselectedListener(null)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        DataManager.save()
     }
 
     /************************************************Methods***********************************************************/

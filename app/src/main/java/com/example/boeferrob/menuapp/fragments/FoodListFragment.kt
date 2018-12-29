@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_food_list.view.*
 class FoodListFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private var listener: OnFragmentInteractionListener? = null
-    private val foodList: MutableList<Food> = DataManager.foodList
+    //private val foodList: MutableList<Food> = DataManager.foodList
 
     /************************************************Override**********************************************************/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +44,7 @@ class FoodListFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        val adapter = FoodRecyclerAdapter(listFood.context,foodList)
+        val adapter = FoodRecyclerAdapter(listFood.context,DataManager.foodList)
         val layoutManager = LinearLayoutManager(listFood.context)
         val swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
         val  deleteIcon: Drawable = ContextCompat.getDrawable(listFood.context,R.drawable.ic_delete_black_24dp)!!

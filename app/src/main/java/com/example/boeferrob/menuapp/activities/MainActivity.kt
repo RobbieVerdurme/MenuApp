@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
 
     override fun onPause() {
         super.onPause()
-        DataManager.save()
     }
 
     /************************************************Methods***********************************************************/

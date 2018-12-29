@@ -1,81 +1,63 @@
 package com.example.boeferrob.menuapp.network
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.util.Log
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.Ingredient
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.io.*
 import java.util.ArrayList
 
 object DataManager {
-    var foodList :MutableList<Food> = ArrayList<Food>() as MutableList<Food>
-    lateinit var file: File
+    var foodList :MutableList<Food> = ArrayList<Food>()
+    //lateinit var file: File
+    val firebaseDatabase = FirebaseDatabase.getInstance()
+    val databaseRefrence = firebaseDatabase.getReference()
 
     init {
-        //makeFakeFood()
-    }
+        databaseRefrence.addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                println("Failed to read value ${p0.message}")
+            }
 
-    private fun makeFakeFood(){
-        var ingredients =ArrayList<Ingredient>()
-        ingredients.add(Ingredient("kip", 1,"Unit"))
-        ingredients.add(Ingredient("kersttomaten", 500,"Grams"))
-        ingredients.add(Ingredient("ketchup", 20,"Grams"))
-        ingredients.add(Ingredient("kaneel", 1,"Gram"))
-        ingredients.add(Ingredient("paprika", 1,"Unit"))
-        ingredients.add(Ingredient("zout", 2,"Grams"))
-        ingredients.add(Ingredient("peper", 3,"Grams"))
-        ingredients.add(Ingredient("hamburger", 1,"Unit"))
-        ingredients.add(Ingredient("annannas", 1,"Unit"))
-        ingredients.add(Ingredient("chirizo", 1,"Unit"))
-        ingredients.add(Ingredient("kaas", 1,"Unit"))
-        ingredients.add(Ingredient("oud brugge kaas", 500,"Grams"))
-
-        var food = Food("Pizza", ingredients, "Pizza")
-        foodList.add(food)
-
-        ingredients = ArrayList<Ingredient>()
-        ingredients.add(Ingredient("chirizo", 1,"Unit"))
-        ingredients.add(Ingredient("kaas", 1,"Unit"))
-        ingredients.add(Ingredient("oud brugge kaas", 500,"Grams"))
-
-        food = Food("Lasigna", ingredients, "deeg in een pot")
-        foodList.add(food)
-
-        food = Food("Cake", ingredients, "taart met versiering")
-        foodList.add(food)
-
-        food = Food("Hamburger met frietjes", ingredients, "")
-        foodList.add(food)
-
-        food = Food("botherhammen", ingredients, "boterhammen met beleg")
-        foodList.add(food)
-
-        food = Food("Broodjes", ingredients, "Afgebakken broodjes met beleg")
-        foodList.add(food)
-
-        food = Food("stoverij met frietjes", ingredients, "")
-        foodList.add(food)
-
-        food = Food("boomstammetjes", ingredients, "boomstammetjes met appelmoes")
-        foodList.add(food)
-
-        food = Food("Test", ingredients, "dit is een testje")
-        foodList.add(food)
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if(dataSnapshot.exists()){
+                    foodList.clear()
+                    for (h in dataSnapshot.child("Food").children){
+                        val food = h.getValue(Food::class.java)
+                        foodList.add(food!!)
+                    }
+                }
+            }
+        })
     }
 
     fun createFile(context: Context){
-        file = File(context.filesDir.toString() + "/" +  "MenuApp")
-        save()
-        getData()
+/*
+        val directory = context.filesDir
+        file = File(directory,"MenuApp")
+
+        context.openFileInput(file.name).use {
+            foodList.add(Food(it.read().toString(), ArrayList<Ingredient>(), ""))
+        }
+
+*/
+
     }
 
     fun save(){
+        /*
         var fileoutputstream = FileOutputStream(file)
-        ObjectOutputStream(fileoutputstream).writeObject(foodList)
-    }
-
-    fun getData(){
-        var fileInputstream = FileInputStream(file)
-        var objectoutputstream = ObjectInputStream(fileInputstream)
-        foodList = objectoutputstream.readObject() as ArrayList<Food>
+        var objectouputstream = ObjectOutputStream(fileoutputstream).use { it.writeObject(foodList) }
+        fileoutputstream.flush()
+        fileoutputstream.close()
+        */
+        for (food in foodList) {
+            databaseRefrence.child("Food").push().setValue(food)
+        }
     }
 }

@@ -6,9 +6,13 @@
              tools:context=".fragments.DecideFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
+    <data>
+        <variable
+            name = "viewmodel"
+            type = "com.example.boeferrob.menuapp.ui.MainViewModel"/>
+    </data>
     <TextView
-            android:text="@string/click_the_decide_button"
+            android:text="@{viewmodel.currentRamdomFood}"
             android:layout_width="wrap_content"
             android:layout_height="36dp" android:id="@+id/lblMenu"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toEndOf="parent"
@@ -16,12 +20,15 @@
             app:layout_constraintBottom_toTopOf="@+id/btnDecide" app:layout_constraintHorizontal_bias="0.506"
             app:layout_constraintVertical_bias="0.431"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium" android:textSize="30sp"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            tools:text="@string/click_the_decide_button"
+    />
     <Button
             android:text="@string/decide"
             android:layout_width="0dp"
             android:layout_height="95dp"
             android:id="@+id/btnDecide"
+            android:onClick="@{() -> viewmodel.onChangeRandomFoodClick}"
             app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
     />

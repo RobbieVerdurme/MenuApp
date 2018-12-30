@@ -34,24 +34,68 @@ import kotlinx.android.synthetic.main.fragment_food_list.view.*
 class FoodListFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private var listener: OnFragmentInteractionListener? = null
-    //private val foodList: MutableList<Food> = DataManager.foodList
 
     /************************************************Override**********************************************************/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_food_list, container, false)
     }
 
-
     override fun onStart() {
         super.onStart()
-        val adapter = FoodRecyclerAdapter(listFood.context,DataManager.foodList)
-        val layoutManager = LinearLayoutManager(listFood.context)
+        configureRecylcerView()
+
+        fab.setOnClickListener{
+            val activityIntent = Intent(activity, FoodActivity::class.java)
+            startActivity(activityIntent)
+        }
+
+        txtFilter.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                (listFood.adapter as Filterable).filter.filter(txtFilter.text.toString())
+            }
+        })
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        (listFood.adapter as Filterable).filter.filter(txtFilter.text.toString())
+        listFood.adapter?.notifyDataSetChanged()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        TAG = "FoodListFragment"
+
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    interface OnFragmentInteractionListener {
+        fun onFragmentInteraction(uri: Uri)
+    }
+    /************************************************Methods***********************************************************/
+    private fun configureRecylcerView(){
+        val adapter = FoodRecyclerAdapter(activity!!,DataManager.foodList)
+        val layoutManager = LinearLayoutManager(activity)
         val swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
-        val  deleteIcon: Drawable = ContextCompat.getDrawable(listFood.context,R.drawable.ic_delete_black_24dp)!!
+        val  deleteIcon: Drawable = ContextCompat.getDrawable(activity!!,R.drawable.ic_delete_black_24dp)!!
 
         listFood.layoutManager = layoutManager
         listFood.adapter = adapter
-        listFood.addItemDecoration(DividerItemDecoration(listFood.context,layoutManager.orientation))
+        listFood.addItemDecoration(DividerItemDecoration(activity,layoutManager.orientation))
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onMove(p0: RecyclerView, p1: RecyclerView.ViewHolder, p2: RecyclerView.ViewHolder): Boolean {
                 return false // niet nodig in deze applicatie
@@ -97,52 +141,7 @@ class FoodListFragment : BaseFragment() {
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(listFood)
-
-        fab.setOnClickListener{
-            val activityIntent = Intent(activity, FoodActivity::class.java)
-            startActivity(activityIntent)
-        }
-
-        txtFilter.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                adapter.filter.filter(txtFilter.text.toString())
-            }
-
-        })
     }
-
-
-    override fun onResume() {
-        super.onResume()
-        (listFood.adapter as Filterable).getFilter().filter(txtFilter.text.toString())
-        listFood.adapter?.notifyDataSetChanged()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        TAG = "FoodListFragment"
-
-        if (context is OnFragmentInteractionListener) {
-            listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        fun onFragmentInteraction(uri: Uri)
-    }
-    /************************************************Methods***********************************************************/
-
 
     /************************************************companion object**************************************************/
     companion object {

@@ -2,6 +2,7 @@ package com.example.boeferrob.menuapp.fragments.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.provider.ContactsContract
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
+import com.example.boeferrob.menuapp.network.DataManager
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 
 class FoodRecyclerAdapter(private val context : Context, private val food: MutableList<Food>) : RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(), Filterable{
@@ -65,13 +67,14 @@ class FoodRecyclerAdapter(private val context : Context, private val food: Mutab
         val removedPositionFood = food.indexOf(removedItem)
 
         food.remove(removedItem)
-        println(removedItem.name)
+        DataManager.remove(removedItem)
         filter()
 
         notifyItemRemoved(removedPosition)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
             food.add(removedPositionFood,removedItem)
+            DataManager.save(removedItem)
             filter()
             notifyItemInserted(removedPosition)
         }.show()

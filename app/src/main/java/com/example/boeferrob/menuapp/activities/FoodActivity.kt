@@ -44,7 +44,7 @@ class FoodActivity : AppCompatActivity() {
         if(foodPosition != POSITION_NOT_SET){
             displayFood()
         }else {
-            DataManager.foodList.add(Food("", ArrayList<Ingredient>(), ""))
+            DataManager.foodList.add(Food("","", ArrayList<Ingredient>(), ""))
             foodPosition = DataManager.foodList.lastIndex
             food = DataManager.foodList[foodPosition]
             configAdapterListFoodIngredients()
@@ -56,7 +56,6 @@ class FoodActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         saveFood()
-        DataManager.save()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -164,6 +163,7 @@ class FoodActivity : AppCompatActivity() {
         val food = DataManager.foodList[foodPosition]
         food.name = txtTitleFood.text.toString()
         food.discritpion = txtDescriptionFood.text.toString()
+        DataManager.save(food)
     }
 
 }

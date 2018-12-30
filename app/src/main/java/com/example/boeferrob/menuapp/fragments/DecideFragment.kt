@@ -1,5 +1,7 @@
 package com.example.boeferrob.menuapp.fragments
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -12,23 +14,27 @@ import com.example.boeferrob.menuapp.Ingredient
 
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.ui.DecideViewModel
 import kotlinx.android.synthetic.main.fragment_decide.*
 import kotlin.random.Random
 
 class DecideFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private var listener: OnFragmentInteractionListener? = null
-    private var foodList: MutableList<Food> = ArrayList<Food>()
+    private lateinit var decideViewModel: DecideViewModel
+
 
     /************************************************Override**********************************************************/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        decideViewModel = ViewModelProviders.of(activity!!).get(DecideViewModel::class.java)
         return inflater.inflate(R.layout.fragment_decide, container, false)
     }
 
     override fun onStart() {
         super.onStart()
-        btnDecide.setOnClickListener {RandomFood()}
-        foodList = createFood()
+        btnDecide.setOnClickListener {
+            lblMenu.setText(decideViewModel.RandomFood())
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -53,19 +59,7 @@ class DecideFragment : BaseFragment() {
     }
 
     /************************************************Methods***********************************************************/
-    private fun RandomFood() {
-        if(foodList.isEmpty()){
-            lblMenu.text = "No food in list. Please aan food"
-        }else{
-            val random = Random
-            val randomId = random.nextInt(foodList.size)
-            lblMenu.text = foodList[randomId].toString()
-        }
-    }
 
-    private fun createFood(): MutableList<Food> {
-        return DataManager.foodList
-    }
 
     /************************************************companion object**************************************************/
     companion object {

@@ -1,5 +1,7 @@
 package com.example.boeferrob.menuapp.fragments
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -8,7 +10,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -19,30 +20,32 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Filterable
 import com.example.boeferrob.menuapp.Food
-import com.example.boeferrob.menuapp.Ingredient
-
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
 import com.example.boeferrob.menuapp.fragments.Adapter.FoodRecyclerAdapter
-import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_food_list.*
-import kotlinx.android.synthetic.main.fragment_food_list.view.*
 
 class FoodListFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var foodListFragmentViewModel: FoodListFragmentViewModel
 
     /************************************************Override**********************************************************/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        foodListFragmentViewModel = ViewModelProviders.of(activity!!).get(FoodListFragmentViewModel::class.java)
         return inflater.inflate(R.layout.fragment_food_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        configureRecylcerView()
     }
 
     override fun onStart() {
         super.onStart()
-        configureRecylcerView()
 
         fab.setOnClickListener{
             val activityIntent = Intent(activity, FoodActivity::class.java)
@@ -88,10 +91,12 @@ class FoodListFragment : BaseFragment() {
     }
     /************************************************Methods***********************************************************/
     private fun configureRecylcerView(){
-        val adapter = FoodRecyclerAdapter(activity!!,DataManager.foodList)
+        val adapter = FoodRecyclerAdapter(activity!!, foodListFragmentViewModel.getFoodList().value as ArrayList<Food>, foodListFragmentViewModel)
         val layoutManager = LinearLayoutManager(activity)
         val swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
         val  deleteIcon: Drawable = ContextCompat.getDrawable(activity!!,R.drawable.ic_delete_black_24dp)!!
+
+        foodListFragmentViewModel.getFoodList().observe(this, Observer<List<Food>> {adapter.setData(it!!)})
 
         listFood.layoutManager = layoutManager
         listFood.adapter = adapter

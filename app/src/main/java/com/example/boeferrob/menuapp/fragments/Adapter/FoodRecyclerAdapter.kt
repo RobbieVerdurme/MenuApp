@@ -20,7 +20,7 @@ import com.example.boeferrob.menuapp.network.DataManager
 import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 
-class FoodRecyclerAdapter(private val context : Context, private var food: ArrayList<Food>, private var viewmodel: FoodListFragmentViewModel) : Filterable, RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(){
+class FoodRecyclerAdapter(private val context : Context, private var food: ArrayList<Food>) : Filterable, RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(){
 
     /************************************************variablen*********************************************************/
     private val layoutInflater = LayoutInflater.from(context)
@@ -71,14 +71,12 @@ class FoodRecyclerAdapter(private val context : Context, private var food: Array
         val removedPositionFood = food.indexOf(removedItem)
 
         food.remove(removedItem)
-        viewmodel.remove(removedItem)
         filter()
 
         notifyItemRemoved(removedPosition)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
             food.add(removedPositionFood,removedItem)
-            viewmodel.save(removedItem)
             filter()
             notifyItemInserted(removedPosition)
         }.show()

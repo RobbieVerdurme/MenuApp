@@ -99,6 +99,7 @@ class FoodRecyclerAdapter(private val context : Context, private var food: Array
 
     fun setData(foodList: List<Food>){
         food = ArrayList(foodList)
+        filterListResult = ArrayList(food)
         notifyDataSetChanged()
     }
 

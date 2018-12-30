@@ -1,5 +1,7 @@
 package com.example.boeferrob.menuapp.fragments.Adapter
 
+
+import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.Snackbar
@@ -13,12 +15,16 @@ import android.widget.TextView
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
+import com.example.boeferrob.menuapp.activities.MainActivity
+import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 
-class FoodRecyclerAdapter(private val context : Context, private val food: MutableList<Food>) : RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(), Filterable{
+class FoodRecyclerAdapter(private val context : Context, private var food: ArrayList<Food>, private var viewmodel: FoodListFragmentViewModel) : Filterable, RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(){
+
     /************************************************variablen*********************************************************/
     private val layoutInflater = LayoutInflater.from(context)
-    private var filterListResult: MutableList<Food>
+    private var filterListResult: ArrayList<Food>
     private lateinit var charSearch: String
 
     /**************************************************init************************************************************/
@@ -65,13 +71,14 @@ class FoodRecyclerAdapter(private val context : Context, private val food: Mutab
         val removedPositionFood = food.indexOf(removedItem)
 
         food.remove(removedItem)
-        println(removedItem.name)
+        viewmodel.remove(removedItem)
         filter()
 
         notifyItemRemoved(removedPosition)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
             food.add(removedPositionFood,removedItem)
+            viewmodel.save(removedItem)
             filter()
             notifyItemInserted(removedPosition)
         }.show()
@@ -88,6 +95,11 @@ class FoodRecyclerAdapter(private val context : Context, private val food: Mutab
             }
             filterListResult = resultList
         }
+    }
+
+    fun setData(foodList: List<Food>){
+        food = ArrayList(foodList)
+        notifyDataSetChanged()
     }
 
 

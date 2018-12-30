@@ -1,5 +1,6 @@
 package com.example.boeferrob.menuapp.activities
 
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,6 +20,7 @@ import com.example.boeferrob.menuapp.Ingredient
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
 import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.ui.FoodActivityViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 import com.example.boeferrob.menuapp.utils.MESUREMENTLIST
 import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
@@ -32,31 +34,37 @@ class FoodActivity : AppCompatActivity() {
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
     private lateinit var  deleteIcon: Drawable
     private lateinit var food: Food
+    lateinit var foodActivityViewModel: FoodActivityViewModel
 
     /************************************************Override**********************************************************/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
 
+        //create viewmodel
+        foodActivityViewModel = ViewModelProviders.of(this).get(FoodActivityViewModel::class.java)
+
+        //food position in the list
         foodPosition = savedInstanceState?.getInt(FOOD_POSITION, POSITION_NOT_SET)?:intent.getIntExtra(FOOD_POSITION,
             POSITION_NOT_SET)
 
+        //get food from list
         if(foodPosition != POSITION_NOT_SET){
-            displayFood()
+            food = foodActivityViewModel.getFood(foodPosition)
         }else {
-            DataManager.foodList.add(Food("", ArrayList<Ingredient>(), ""))
-            foodPosition = DataManager.foodList.lastIndex
-            food = DataManager.foodList[foodPosition]
-            configAdapterListFoodIngredients()
+            food = foodActivityViewModel.getFood(foodActivityViewModel.addFood(Food("","", ArrayList<Ingredient>(), "")))
         }
 
+        //display the food
+        displayFood()
+
+        //button to add an ingredient
         fab.setOnClickListener {showAlertIngredient()}
     }
 
     override fun onPause() {
         super.onPause()
         saveFood()
-        DataManager.save()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -71,7 +79,6 @@ class FoodActivity : AppCompatActivity() {
 
     /************************************************Methods***********************************************************/
     private fun displayFood() {
-        food = DataManager.foodList[foodPosition]
         txtTitleFood.setText(food.name)
         txtDescriptionFood.setText(food.discritpion)
         configAdapterListFoodIngredients()
@@ -161,9 +168,9 @@ class FoodActivity : AppCompatActivity() {
     }
 
     private fun saveFood() {
-        val food = DataManager.foodList[foodPosition]
         food.name = txtTitleFood.text.toString()
         food.discritpion = txtDescriptionFood.text.toString()
+        foodActivityViewModel.saveFood(food)
     }
 
 }

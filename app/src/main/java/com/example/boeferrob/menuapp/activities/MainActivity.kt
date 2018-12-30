@@ -2,6 +2,7 @@ package com.example.boeferrob.menuapp.activities
 
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_layout)
-        DataManager.createFile(this)
     }
 
     override fun onStart() {
@@ -62,11 +62,6 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
     override fun onStop() {
         super.onStop()
         navigation.setOnNavigationItemReselectedListener(null)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        DataManager.save()
     }
 
     /************************************************Methods***********************************************************/

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "349364600107",
+    "firebase_url": "https://menuapp-1cb58.firebaseio.com",
+    "project_id": "menuapp-1cb58",
+    "storage_bucket": "menuapp-1cb58.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349364600107:android:1b0f85e5bf1cf7c4",
+        "android_client_info": {
+          "package_name": "com.example.boeferrob.menuapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "349364600107-p8ctd89ki4liuk23tn953djmjv1oolps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.boeferrob.menuapp",
+            "certificate_hash": "27ec9dc3d5aef6f828c4c73d5110b9507a266947"
+          }
+        },
+        {
+          "client_id": "349364600107-o0gejmgf38it15o6djj1enc2ckicbrun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzIy21z2CtFwSwKaV_dRod-AEJWT5n4a0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "349364600107-o0gejmgf38it15o6djj1enc2ckicbrun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

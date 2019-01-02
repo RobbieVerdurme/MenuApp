@@ -157,43 +157,6 @@ class FoodActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(listFoodIngredients)
     }
 
-    private fun checkRequiredFieldsFood(): Boolean{
-        var check = true
-
-        if(textFieldEmpty(txtTitleFood)){
-            txtTitleFood.error = getString(R.string.required)
-            check = false
-        }
-
-        if(textFieldEmpty(txtDescriptionFood)){
-            txtDescriptionFood.error = getString(R.string.required)
-            check = false
-        }
-
-        return check
-    }
-
-    private fun checkRequiredFieldsIngredient(txtName: EditText, txtquantity: EditText): Boolean{
-        var check = true
-
-        if (txtName.text.toString().trim().isNullOrBlank()){
-            txtName.error = getString(R.string.required)
-            check = false
-        }
-
-        if(txtquantity.text.toString().trim().isNullOrBlank()){
-            txtquantity.error = getString(R.string.required)
-            check = false
-        }
-
-        return check
-    }
-
-    private fun textFieldEmpty(textField: EditText): Boolean {
-        val text = textField.text.toString()
-        return text.trim() == ""
-    }
-
     private fun showAlertIngredient(){
         val alertdialog = AlertDialog.Builder(this)
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ingredient,null)
@@ -235,4 +198,36 @@ class FoodActivity : AppCompatActivity() {
         }
     }
 
+    //checks
+    private fun checkRequiredFieldsFood(): Boolean{
+        var check = true
+
+        if(textFieldEmpty(txtTitleFood)){
+            txtTitleFood.error = getString(R.string.required)
+            check = false
+        }
+
+        return check
+    }
+
+    private fun checkRequiredFieldsIngredient(txtName: EditText, txtquantity: EditText): Boolean{
+        var check = true
+
+        if (txtName.text.toString().trim().isNullOrBlank()){
+            txtName.error = getString(R.string.required)
+            check = false
+        }
+
+        if(txtquantity.text.toString().trim().isNullOrBlank()){
+            txtquantity.error = getString(R.string.required)
+            check = false
+        }
+
+        return check
+    }
+
+    private fun textFieldEmpty(textField: EditText): Boolean {
+        val text = textField.text.toString()
+        return text.trim() == ""
+    }
 }

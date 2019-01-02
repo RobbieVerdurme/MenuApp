@@ -72,7 +72,7 @@ class IngredientRecyclerAdapter(private val context : Context, private  val ingr
                 mDialogView.txtquantity.setText(ingredient.quantity.toString())
                 mDialogView.spinnerMeasurement.setSelection(mesurementpos)
 
-                mDialogView.btnSave.setOnClickListener {
+                mDialogView.btnSaveIngredient.setOnClickListener {
                     ingredient.name = mDialogView.txtName.text.toString()
                     ingredient.quantity = mDialogView.txtquantity.text.toString().toInt()
                     ingredient.measurement = mDialogView.spinnerMeasurement.selectedItem.toString()
@@ -80,7 +80,7 @@ class IngredientRecyclerAdapter(private val context : Context, private  val ingr
                     notifyDataSetChanged()
                 }
 
-                mDialogView.btnCancel.setOnClickListener {
+                mDialogView.btnCancelIngredient.setOnClickListener {
                     mAlertDialog.dismiss()
                 }
             }

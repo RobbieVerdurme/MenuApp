@@ -8,6 +8,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="decide">DECIDE</string>
+    <string name="required">Required field</string>
     <string name="click_the_decide_button">Click the decide button</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>

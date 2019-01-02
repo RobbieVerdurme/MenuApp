@@ -1,11 +1,14 @@
 package com.example.boeferrob.menuapp.activities
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.util.AttributeSet
+import android.view.View
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.BaseFragment
 import com.example.boeferrob.menuapp.fragments.DecideFragment
@@ -41,7 +44,6 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
                 }
             }
         }
-
         viewpager_main.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
             override fun getItem(p0: Int): Fragment {
                 when(p0){
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
             }
         }
     }
+
 
     override fun onFragmentInteraction(uri: Uri) {}
 

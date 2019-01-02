@@ -8,7 +8,7 @@ import kotlin.random.Random
 
 class DecideViewModel: ViewModel() {
     /************************************************variablen*********************************************************/
-    private var foodList:MutableLiveData<List<Food>>? = DataManager.getFoodList()
+    private var foodList:MutableLiveData<List<Food>> = DataManager.getFoodList()
 
     /************************************************Methods***********************************************************/
     fun RandomFood(): String {

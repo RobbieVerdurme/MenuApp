@@ -1,6 +1,7 @@
 package com.example.boeferrob.menuapp.activities
 
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,18 +15,21 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.Ingredient
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
-import com.example.boeferrob.menuapp.network.DataManager
 import com.example.boeferrob.menuapp.ui.FoodActivityViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 import com.example.boeferrob.menuapp.utils.MESUREMENTLIST
 import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
+import kotlinx.android.synthetic.main.dialog_ingredient.*
 import kotlinx.android.synthetic.main.dialog_ingredient.view.*
 
 class FoodActivity : AppCompatActivity() {
@@ -59,12 +63,7 @@ class FoodActivity : AppCompatActivity() {
         displayFood()
 
         //button to add an ingredient
-        fab.setOnClickListener {showAlertIngredient()}
-    }
-
-    override fun onPause() {
-        super.onPause()
-        saveFood()
+        fabAddIngredient.setOnClickListener {showAlertIngredient()}
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -75,6 +74,23 @@ class FoodActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         listFoodIngredients.adapter?.notifyDataSetChanged()
+    }
+
+    //menu
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.foodactionsmenu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        val id = item!!.itemId
+        when(id){
+            R.id.action_save -> {
+                saveFood()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+
     }
 
     /************************************************Methods***********************************************************/
@@ -141,6 +157,43 @@ class FoodActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(listFoodIngredients)
     }
 
+    private fun checkRequiredFieldsFood(): Boolean{
+        var check = true
+
+        if(textFieldEmpty(txtTitleFood)){
+            txtTitleFood.error = getString(R.string.required)
+            check = false
+        }
+
+        if(textFieldEmpty(txtDescriptionFood)){
+            txtDescriptionFood.error = getString(R.string.required)
+            check = false
+        }
+
+        return check
+    }
+
+    private fun checkRequiredFieldsIngredient(txtName: EditText, txtquantity: EditText): Boolean{
+        var check = true
+
+        if (txtName.text.toString().trim().isNullOrBlank()){
+            txtName.error = getString(R.string.required)
+            check = false
+        }
+
+        if(txtquantity.text.toString().trim().isNullOrBlank()){
+            txtquantity.error = getString(R.string.required)
+            check = false
+        }
+
+        return check
+    }
+
+    private fun textFieldEmpty(textField: EditText): Boolean {
+        val text = textField.text.toString()
+        return text.trim() == ""
+    }
+
     private fun showAlertIngredient(){
         val alertdialog = AlertDialog.Builder(this)
         val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ingredient,null)
@@ -152,25 +205,34 @@ class FoodActivity : AppCompatActivity() {
 
         val mAlertDialog = alertdialog.show()
 
-        mDialogView.btnSave.setOnClickListener {
-            mAlertDialog.dismiss()
-            val name = mDialogView.txtName.text.toString()
-            val quantity = mDialogView.txtquantity.text.toString().toInt()
-            val mesurement = mDialogView.spinnerMeasurement.selectedItem.toString()
+        mDialogView.btnSaveIngredient.setOnClickListener {
+            if (checkRequiredFieldsIngredient(mDialogView.txtName, mDialogView.txtquantity)){
+                mAlertDialog.dismiss()
+                val name = mDialogView.txtName.text.toString()
+                val quantity = mDialogView.txtquantity.text.toString().toInt()
+                val mesurement = mDialogView.spinnerMeasurement.selectedItem.toString()
 
-            food.ingredients.add(Ingredient(name,quantity,mesurement))
-            listFoodIngredients.adapter?.notifyItemInserted(food.ingredients.lastIndex)
+                food.ingredients.add(Ingredient(name,quantity,mesurement))
+                listFoodIngredients.adapter?.notifyItemInserted(food.ingredients.lastIndex)
+            }
         }
 
-        mDialogView.btnCancel.setOnClickListener {
+        mDialogView.btnCancelIngredient.setOnClickListener {
             mAlertDialog.dismiss()
         }
     }
 
     private fun saveFood() {
-        food.name = txtTitleFood.text.toString()
-        food.discritpion = txtDescriptionFood.text.toString()
-        foodActivityViewModel.saveFood(food)
+        if(checkRequiredFieldsFood()){
+            food.name = txtTitleFood.text.toString()
+            food.discritpion = txtDescriptionFood.text.toString()
+            foodActivityViewModel.saveFood(food)
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }else if (food.name.isNullOrBlank() or food.discritpion.isNullOrBlank()){
+            foodActivityViewModel.deleteFood(food)
+        }
     }
 
 }

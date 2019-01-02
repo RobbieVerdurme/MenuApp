@@ -13,7 +13,7 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/spinnerMeasurement" android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/btnCancel"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/btnCancelIngredient"
             android:hint="@string/quantity" app:layout_constraintHorizontal_bias="0.6" android:autofillHints=""/>
     <Spinner
             android:layout_width="111dp"
@@ -22,7 +22,7 @@
             android:layout_marginStart="8dp" android:layout_marginTop="8dp"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintEnd_toStartOf="@+id/txtName"
             android:layout_marginEnd="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnCancel"/>
+            app:layout_constraintBottom_toTopOf="@+id/btnCancelIngredient"/>
     <EditText
             android:layout_width="111dp"
             android:layout_height="wrap_content"
@@ -31,20 +31,20 @@
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toEndOf="@+id/spinnerMeasurement"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.875" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/btnSave" android:hint="@string/name" android:inputType="text"
+            app:layout_constraintBottom_toTopOf="@+id/btnSaveIngredient" android:hint="@string/name" android:inputType="text"
             android:autofillHints=""/>
     <Button
             android:text="@string/save"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btnSave" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:id="@+id/btnSaveIngredient" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/txtName"
-            app:layout_constraintStart_toEndOf="@+id/btnCancel" android:layout_marginStart="8dp"/>
+            app:layout_constraintStart_toEndOf="@+id/btnCancelIngredient" android:layout_marginStart="8dp"/>
     <Button
             android:text="@string/cancel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/btnCancel" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:id="@+id/btnCancelIngredient" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/txtquantity"
-            app:layout_constraintEnd_toStartOf="@+id/btnSave" android:layout_marginEnd="8dp"/>
+            app:layout_constraintEnd_toStartOf="@+id/btnSaveIngredient" android:layout_marginEnd="8dp"/>
 </android.support.constraint.ConstraintLayout>

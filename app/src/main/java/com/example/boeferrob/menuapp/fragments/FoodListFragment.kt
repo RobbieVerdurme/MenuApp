@@ -91,7 +91,7 @@ class FoodListFragment : BaseFragment() {
     }
     /************************************************Methods***********************************************************/
     private fun configureRecylcerView(){
-        val adapter = FoodRecyclerAdapter(activity!!, foodListFragmentViewModel.getFoodList().value as ArrayList<Food>)
+        val adapter = FoodRecyclerAdapter(activity!!, foodListFragmentViewModel.getFoodList().value as ArrayList<Food>, foodListFragmentViewModel)
         val layoutManager = LinearLayoutManager(activity)
         val swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
         val  deleteIcon: Drawable = ContextCompat.getDrawable(activity!!,R.drawable.ic_delete_black_24dp)!!

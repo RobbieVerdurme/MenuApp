@@ -8,18 +8,32 @@ import com.example.boeferrob.menuapp.network.DataManager
 class FoodActivityViewModel: ViewModel() {
     /************************************************variablen*********************************************************/
     private var foodList: MutableLiveData<List<Food>> = DataManager.getFoodList()
+    private var foodListArrayList: ArrayList<Food>? = null
 
     /************************************************Methods***********************************************************/
     fun addFood(food: Food): Int{
-        val foodListArrayList = foodList.value as ArrayList<Food>
-        foodListArrayList.add(food)
+        checkfoodListArrayList()
+        foodListArrayList!!.add(food)
 
         foodList.value = foodListArrayList
-        return  foodListArrayList.lastIndex
+        return  foodListArrayList!!.lastIndex
     }
 
     fun saveFood(food: Food){
         DataManager.save(food)
+    }
+
+    fun deleteFood(food: Food){
+        checkfoodListArrayList()
+        foodListArrayList!!.remove(food)
+
+        foodList.value = foodListArrayList
+    }
+
+    private fun checkfoodListArrayList(){
+        if(foodListArrayList.isNullOrEmpty()){
+            foodListArrayList = foodList.value as ArrayList<Food>
+        }
     }
 
     /***********************************************get & set**********************************************************/

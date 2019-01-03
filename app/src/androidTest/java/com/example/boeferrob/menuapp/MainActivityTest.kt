@@ -1,7 +1,6 @@
 package com.example.boeferrob.menuapp
 
 import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.Espresso.onData
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.espresso.action.ViewActions.*
@@ -18,7 +17,6 @@ import android.widget.TextView
 import com.example.boeferrob.menuapp.activities.MainActivity
 import com.example.boeferrob.menuapp.fragments.Adapter.FoodRecyclerAdapter
 import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.junit.Rule
@@ -82,7 +80,7 @@ class MainActivityTest {
             onView(withId(R.id.spinnerMeasurement)).perform(click())
             onData(allOf(`is`(instanceOf(String::class.java)), `is`(ingredient.measurement))).perform(click())
 */
-            onView(withId(R.id.txtName)).perform(typeText(ingredient.name))
+            onView(withId(R.id.txtNameIngredient)).perform(typeText(ingredient.name))
 
             onView(withId(R.id.btnSaveIngredient)).perform(click())
         }

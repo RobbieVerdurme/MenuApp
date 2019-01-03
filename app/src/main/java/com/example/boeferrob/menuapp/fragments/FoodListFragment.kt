@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
 import com.example.boeferrob.menuapp.fragments.Adapter.FoodRecyclerAdapter
 import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
+import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
 import kotlinx.android.synthetic.main.fragment_food_list.*
 
 class FoodListFragment : BaseFragment() {

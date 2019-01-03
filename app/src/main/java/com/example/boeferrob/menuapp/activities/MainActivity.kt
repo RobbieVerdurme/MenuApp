@@ -1,20 +1,16 @@
 package com.example.boeferrob.menuapp.activities
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.util.AttributeSet
-import android.view.View
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.BaseFragment
 import com.example.boeferrob.menuapp.fragments.DecideFragment
 import com.example.boeferrob.menuapp.fragments.FoodListFragment
-import com.example.boeferrob.menuapp.network.DataManager
-import kotlinx.android.synthetic.main.main_layout.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionListener, FoodListFragment.OnFragmentInteractionListener{
     /************************************************variablen*********************************************************/
@@ -23,7 +19,7 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
     /************************************************Override**********************************************************/
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_layout)
+        setContentView(R.layout.activity_main)
     }
 
     override fun onStart() {
@@ -57,6 +53,13 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
                 return 2
             }
         }
+
+        viewpager_main.addOnPageChangeListener(object :  ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                navigation.menu.getItem(position).isChecked = true
+            }
+        })
     }
 
 

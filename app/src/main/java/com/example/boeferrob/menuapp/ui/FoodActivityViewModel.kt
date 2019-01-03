@@ -11,12 +11,14 @@ class FoodActivityViewModel: ViewModel() {
     private var foodListArrayList: ArrayList<Food>? = null
 
     /************************************************Methods***********************************************************/
-    fun addFood(food: Food): Int{
+    fun getLastIndexFood(): Int{
+        return  foodList.value!!.size
+    }
+
+    fun addFood(food: Food){
         checkfoodListArrayList()
         foodListArrayList!!.add(food)
-
         foodList.value = foodListArrayList
-        return  foodListArrayList!!.lastIndex
     }
 
     fun saveFood(food: Food){

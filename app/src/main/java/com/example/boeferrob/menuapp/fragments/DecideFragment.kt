@@ -1,26 +1,20 @@
 package com.example.boeferrob.menuapp.fragments
 
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.boeferrob.menuapp.Food
-import com.example.boeferrob.menuapp.Ingredient
-
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
-import com.example.boeferrob.menuapp.network.DataManager
 import com.example.boeferrob.menuapp.ui.DecideViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
+import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
 import kotlinx.android.synthetic.main.fragment_decide.*
-import kotlin.random.Random
 
 class DecideFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
@@ -41,8 +35,8 @@ class DecideFragment : BaseFragment() {
         }
 
         lblMenu.setOnClickListener {
-            val index = decideViewModel.getFoodIndex()//food.indexOf(filterListResult[adapterPosition])
-            if (index == -1){
+            val index = decideViewModel.getFoodIndex()
+            if (index == POSITION_NOT_SET){
                 Toast.makeText(activity,"Click the decide button to choose food", Toast.LENGTH_LONG).show()
             }else{
                 val intent = Intent(activity, FoodActivity::class.java)

@@ -24,12 +24,9 @@ import com.example.boeferrob.menuapp.Ingredient
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
 import com.example.boeferrob.menuapp.ui.FoodActivityViewModel
-import com.example.boeferrob.menuapp.utils.FOOD_POSITION
-import com.example.boeferrob.menuapp.utils.MESUREMENTLIST
-import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
+import com.example.boeferrob.menuapp.utils.*
 import kotlinx.android.synthetic.main.activity_food.*
-import kotlinx.android.synthetic.main.content_food.*
-import kotlinx.android.synthetic.main.dialog_ingredient.*
+import kotlinx.android.synthetic.main.content_foodactivity.*
 import kotlinx.android.synthetic.main.dialog_ingredient.view.*
 
 class FoodActivity : AppCompatActivity() {
@@ -56,14 +53,12 @@ class FoodActivity : AppCompatActivity() {
         if(foodPosition != POSITION_NOT_SET){
             food = foodActivityViewModel.getFood(foodPosition)
         }else {
-            food = foodActivityViewModel.getFood(foodActivityViewModel.addFood(Food("","", ArrayList<Ingredient>(), "")))
+            food = Food("","", ArrayList<Ingredient>(), "")
         }
 
         //display the food
         displayFood()
 
-        //button to add an ingredient
-        fabAddIngredient.setOnClickListener {showAlertIngredient()}
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -157,35 +152,12 @@ class FoodActivity : AppCompatActivity() {
         itemTouchHelper.attachToRecyclerView(listFoodIngredients)
     }
 
-    private fun showAlertIngredient(){
-        val alertdialog = AlertDialog.Builder(this)
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.dialog_ingredient,null)
-
-        mDialogView.spinnerMeasurement.adapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item, MESUREMENTLIST)
-
-        alertdialog.setTitle("Ingredient")
-        alertdialog.setView(mDialogView)
-
-        val mAlertDialog = alertdialog.show()
-
-        mDialogView.btnSaveIngredient.setOnClickListener {
-            if (checkRequiredFieldsIngredient(mDialogView.txtName, mDialogView.txtquantity)){
-                mAlertDialog.dismiss()
-                val name = mDialogView.txtName.text.toString()
-                val quantity = mDialogView.txtquantity.text.toString().toInt()
-                val mesurement = mDialogView.spinnerMeasurement.selectedItem.toString()
-
-                food.ingredients.add(Ingredient(name,quantity,mesurement))
-                listFoodIngredients.adapter?.notifyItemInserted(food.ingredients.lastIndex)
-            }
-        }
-
-        mDialogView.btnCancelIngredient.setOnClickListener {
-            mAlertDialog.dismiss()
-        }
-    }
-
     private fun saveFood() {
+        if (food.name.isBlank() or food.discritpion.isBlank()){
+            foodPosition = foodActivityViewModel.getLastIndexFood() + 1
+            foodActivityViewModel.addFood(food)
+        }
+
         if(checkRequiredFieldsFood()){
             food.name = txtTitleFood.text.toString()
             food.discritpion = txtDescriptionFood.text.toString()
@@ -193,8 +165,6 @@ class FoodActivity : AppCompatActivity() {
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
-        }else if (food.name.isNullOrBlank() or food.discritpion.isNullOrBlank()){
-            foodActivityViewModel.deleteFood(food)
         }
     }
 
@@ -204,22 +174,6 @@ class FoodActivity : AppCompatActivity() {
 
         if(textFieldEmpty(txtTitleFood)){
             txtTitleFood.error = getString(R.string.required)
-            check = false
-        }
-
-        return check
-    }
-
-    private fun checkRequiredFieldsIngredient(txtName: EditText, txtquantity: EditText): Boolean{
-        var check = true
-
-        if (txtName.text.toString().trim().isNullOrBlank()){
-            txtName.error = getString(R.string.required)
-            check = false
-        }
-
-        if(txtquantity.text.toString().trim().isNullOrBlank()){
-            txtquantity.error = getString(R.string.required)
             check = false
         }
 

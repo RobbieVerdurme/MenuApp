@@ -1,7 +1,5 @@
 package com.example.boeferrob.menuapp.fragments.Adapter
 
-
-import android.arch.lifecycle.LiveData
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.Snackbar
@@ -15,8 +13,6 @@ import android.widget.TextView
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
-import com.example.boeferrob.menuapp.activities.MainActivity
-import com.example.boeferrob.menuapp.network.DataManager
 import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
 
@@ -34,11 +30,12 @@ class FoodRecyclerAdapter(private val context : Context, private var food: Array
 
     /************************************************Override**********************************************************/
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
-        val itemView = layoutInflater.inflate(R.layout.item_food_llist, p0, false)
+        val itemView= layoutInflater.inflate(R.layout.item_food_llist, p0, false)
         return ViewHolder(itemView)
     }
 
     override fun getItemCount() = filterListResult.size
+
 
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         val food = filterListResult[p1]

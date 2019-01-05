@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "349364600107-p8ctd89ki4liuk23tn953djmjv1oolps.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.boeferrob.menuapp",
-            "certificate_hash": "27ec9dc3d5aef6f828c4c73d5110b9507a266947"
-          }
-        },
-        {
           "client_id": "349364600107-o0gejmgf38it15o6djj1enc2ckicbrun.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "349364600107-o0gejmgf38it15o6djj1enc2ckicbrun.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

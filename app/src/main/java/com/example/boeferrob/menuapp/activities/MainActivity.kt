@@ -1,5 +1,7 @@
 package com.example.boeferrob.menuapp.activities
 
+import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,6 +12,10 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.BaseFragment
 import com.example.boeferrob.menuapp.fragments.DecideFragment
 import com.example.boeferrob.menuapp.fragments.FoodListFragment
+import com.example.boeferrob.menuapp.utils.RC_SIGN_IN
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionListener, FoodListFragment.OnFragmentInteractionListener{
@@ -20,6 +26,7 @@ class MainActivity : AppCompatActivity(), DecideFragment.OnFragmentInteractionLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
     }
 
     override fun onStart() {

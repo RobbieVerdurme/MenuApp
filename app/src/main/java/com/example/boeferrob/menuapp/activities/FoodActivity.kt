@@ -27,6 +27,8 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
 import com.example.boeferrob.menuapp.ui.FoodActivityViewModel
 import com.example.boeferrob.menuapp.utils.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_foodactivity.*
 import kotlinx.android.synthetic.main.dialog_ingredient.view.*

@@ -3,20 +3,22 @@ package com.example.boeferrob.menuapp.network
 import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
 import android.service.autofill.LuhnChecksumValidator
+import android.support.v4.app.ActivityCompat.startActivityForResult
 import com.example.boeferrob.menuapp.Food
 import com.google.firebase.database.*
 import java.util.ArrayList
 
-object DataManager {
+object Repository {
     private var liveFoodList :MutableLiveData<List<Food>> = MutableLiveData<List<Food>>()
     private var foodList = ArrayList<Food>()
     private val firebaseDatabase = FirebaseDatabase.getInstance()
-    private val databaseRefrence = firebaseDatabase.getReference("FoodList")
+    private val databaseRefrenceData = firebaseDatabase.getReference("FoodList")
+    private val databaseRefrenceAuth = firebaseDatabase.getReference("Users")
 
     init {
-        databaseRefrence.keepSynced(true)
+        databaseRefrenceData.keepSynced(true)
         
-        databaseRefrence.addValueEventListener(object : ValueEventListener{
+        databaseRefrenceData.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
                 println("Failed to read value ${p0.message}")
             }
@@ -41,14 +43,18 @@ object DataManager {
     }
 
     fun remove(food:Food){
-        databaseRefrence.child("Food").child(food.key!!).removeValue()
+        databaseRefrenceData.child("Food").child(food.key!!).removeValue()
     }
 
     fun save(food : Food){
         if(food.key.isNullOrBlank()){
-            databaseRefrence.child("Food").push().setValue(food)
+            databaseRefrenceData.child("Food").push().setValue(food)
         }else{
-            databaseRefrence.child("Food").child(food.key!!).setValue(food)
+            databaseRefrenceData.child("Food").child(food.key!!).setValue(food)
         }
     }
+
+
+
+    /////test
 }

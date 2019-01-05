@@ -4,19 +4,19 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.boeferrob.menuapp.Food
-import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.network.Repository
 
 class FoodListFragmentViewModel:ViewModel(){
     /************************************************variablen*********************************************************/
-    private var foodList: MutableLiveData<List<Food>> = DataManager.getFoodList()
+    private var foodList: MutableLiveData<List<Food>> = Repository.getFoodList()
 
     /***********************************************Methods***********************************************************/
-    fun remove(removedItem : Food){
-        DataManager.remove(removedItem)
+    fun removeFood(removedItem : Food){
+        Repository.remove(removedItem)
     }
 
-    fun save(food: Food){
-        DataManager.save(food)
+    fun saveFood(food: Food){
+        Repository.save(food)
     }
 
     /***********************************************get & set**********************************************************/

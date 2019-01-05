@@ -68,14 +68,14 @@ class FoodRecyclerAdapter(private val context : Context, private var food: Array
         val removedPositionFood = food.indexOf(removedItem)
 
         food.remove(removedItem)
-        viewModel.remove(removedItem)
+        viewModel.removeFood(removedItem)
         filter()
 
         notifyItemRemoved(removedPosition)
 
         Snackbar.make(viewHolder.itemView, "${removedItem.name} deleted.", Snackbar.LENGTH_LONG).setAction("UNDO"){
             food.add(removedPositionFood,removedItem)
-            viewModel.save(removedItem)
+            viewModel.saveFood(removedItem)
             filter()
             notifyItemInserted(removedPosition)
         }.show()

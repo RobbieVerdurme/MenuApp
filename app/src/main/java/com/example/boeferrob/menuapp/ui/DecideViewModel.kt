@@ -3,13 +3,13 @@ package com.example.boeferrob.menuapp.ui
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.example.boeferrob.menuapp.Food
-import com.example.boeferrob.menuapp.network.DataManager
+import com.example.boeferrob.menuapp.network.Repository
 import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
 import kotlin.random.Random
 
 class DecideViewModel: ViewModel() {
     /************************************************variablen*********************************************************/
-    private var foodList:MutableLiveData<List<Food>> = DataManager.getFoodList()
+    private var foodList:MutableLiveData<List<Food>> = Repository.getFoodList()
     private var chosenRandomfood: Food? = null
 
     /************************************************Methods***********************************************************/

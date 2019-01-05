@@ -1,6 +1,5 @@
 package com.example.boeferrob.menuapp
 
-import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.espresso.action.ViewActions.*
@@ -40,9 +39,12 @@ class MainActivityTest {
 
     @Test
     fun changeRandomFood(){
-        val text = onView(withId(R.id.lblMenu)).toString()
-
         onView(withId(R.id.btnDecide)).perform(click())
+    }
+
+    @Test
+    fun goToFood(){
+        onView(withId(R.id.lblMenu)).perform(click())
     }
 
     ////test FoodListFragment
@@ -56,16 +58,6 @@ class MainActivityTest {
     }
 
     @Test
-    fun addFoodTest_TitleOnly(){
-        testRequiredInput(R.id.txtTitleFood, titleFood, R.id.txtDescriptionFood)
-    }
-
-    @Test
-    fun addFoodTest_DescriptionOnly(){
-        testRequiredInput(R.id.txtDescriptionFood, titleFood, R.id.txtTitleFood)
-    }
-
-    @Test
     fun addFoodTest(){
         onView(withId(R.id.navigation_recipeList)).perform(click())
         onView(withId(R.id.fab)).perform(click())
@@ -73,16 +65,14 @@ class MainActivityTest {
         onView(withId(R.id.txtTitleFood)).perform(typeText(titleFood)).perform(closeSoftKeyboard())
         onView(withId(R.id.txtDescriptionFood)).perform(typeText(descriptionFood)).perform(closeSoftKeyboard())
         for (ingredient in ingredientListFood) {
-            onView(withId(R.id.fabAddIngredient)).perform(click())
-
-            onView(withId(R.id.txtquantity)).perform(typeText(ingredient.quantity.toString()))
+            onView(withId(R.id.txtQuantity)).perform(typeText(ingredient.quantity.toString()))
 /*
             onView(withId(R.id.spinnerMeasurement)).perform(click())
             onData(allOf(`is`(instanceOf(String::class.java)), `is`(ingredient.measurement))).perform(click())
 */
-            onView(withId(R.id.txtNameIngredient)).perform(typeText(ingredient.name))
+            onView(withId(R.id.txtName)).perform(typeText(ingredient.name))
 
-            onView(withId(R.id.btnSaveIngredient)).perform(click())
+            onView(withId(R.id.imgAddIngredient)).perform(click())
         }
 
         onView(withId(R.id.action_save)).perform(click())
@@ -92,7 +82,7 @@ class MainActivityTest {
     }
 
     @Test
-    fun editPersonTest() {
+    fun editFoodtest() {
         onView(withId(R.id.navigation_recipeList)).perform(click())
         onView(withId(R.id.listFood)).perform(RecyclerViewActions.actionOnItemAtPosition<FoodRecyclerAdapter.ViewHolder>(0, click()))
         onView(withId(R.id.txtTitleFood))
@@ -100,37 +90,24 @@ class MainActivityTest {
             .perform(typeText("testing"))
             .perform(closeSoftKeyboard())
         onView(withId(R.id.action_save)).perform(click())
+        onView(withId(R.id.navigation_recipeList)).perform(click())
         onView(withId(R.id.listFood)).perform(RecyclerViewActions.scrollToHolder(withHolderPersonView("testing")))
     }
 
     @Test
-    fun deleteIngredient(){
+    fun removeIngredient(){
         onView(withId(R.id.navigation_recipeList)).perform(click())
         onView(withId(R.id.listFood)).perform(RecyclerViewActions.actionOnItemAtPosition<FoodRecyclerAdapter.ViewHolder>(0, click()))
-        onView(withId(R.id.listFoodIngredients)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, swipeRight()))
+        onView(withId(R.id.txtTitleFood)).perform(closeSoftKeyboard())
+        onView(withId(R.id.listFoodIngredients)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, swipeLeft()))
         onView(withId(R.id.listFoodIngredients)).check(matches(CoreMatchers.not(atPosition(0, withText("Tomaat")))))
     }
 
     @Test
     fun removeFoodTest() {
         onView(withId(R.id.navigation_recipeList)).perform(click())
-        onView(withId(R.id.listFood)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, swipeRight()))
+        onView(withId(R.id.listFood)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, swipeLeft()))
         onView(withId(R.id.listFood)).check(matches(CoreMatchers.not(atPosition(0, withText("testing")))))
-    }
-
-
-//help fun
-    private fun getString(resourceId: Int): String {
-        return InstrumentationRegistry.getTargetContext().getString(resourceId)
-    }
-
-    private fun testRequiredInput(inputToFillId:Int, textToType: String, inputToCheckId: Int){
-        onView(withId(R.id.navigation_recipeList)).perform(click())
-        onView(withId(R.id.fab)).perform(click())
-
-        onView(withId(inputToFillId)).perform(typeText(textToType)).perform(closeSoftKeyboard())
-        onView(withId(R.id.action_save)).perform(click())
-        onView(withId(inputToCheckId)).check(matches(hasErrorText(getString(R.string.required))))
     }
 
 //vast object aanmaken voor het toevoegen/verwijderen/aanpassen in de recyclerview

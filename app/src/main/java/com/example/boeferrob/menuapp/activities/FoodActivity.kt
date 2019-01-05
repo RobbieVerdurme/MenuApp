@@ -19,6 +19,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.Ingredient
 import com.example.boeferrob.menuapp.R
@@ -28,6 +30,7 @@ import com.example.boeferrob.menuapp.utils.*
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_foodactivity.*
 import kotlinx.android.synthetic.main.dialog_ingredient.view.*
+import kotlinx.android.synthetic.main.item_add_ingredient_list.*
 
 class FoodActivity : AppCompatActivity() {
     /************************************************variablen*********************************************************/
@@ -150,6 +153,24 @@ class FoodActivity : AppCompatActivity() {
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(listFoodIngredients)
+/////////////////// add ingredient
+        spinnerMesurement.adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, MESUREMENTLIST)
+        imgAddIngredient.setOnClickListener {
+            //check if fields are filled in
+            if(checkRequiredFieldsIngredient(txtName, txtQuantity)){
+                //adding ingredient
+                food.ingredients.add(Ingredient(
+                    txtName.text.toString(),
+                    txtQuantity.text.toString().toInt(),
+                    spinnerMesurement.selectedItem.toString()))
+                adapter.notifyDataSetChanged()
+
+                //clear textfields
+                txtName.setText("")
+                txtQuantity.setText("")
+                spinnerMesurement.setSelection(0)
+            }
+        }
     }
 
     private fun saveFood() {
@@ -178,6 +199,14 @@ class FoodActivity : AppCompatActivity() {
         }
 
         return check
+    }
+
+    private fun checkRequiredFieldsIngredient(txtName: TextView, txtquantity: TextView): Boolean{
+        if(txtName.text.toString().trim().isBlank() or txtquantity.toString().trim().isBlank()){
+            Toast.makeText(this, "Fill in the textfields before adding an ingredient", Toast.LENGTH_LONG).show()
+            return false
+        }
+        return true
     }
 
     private fun textFieldEmpty(textField: EditText): Boolean {

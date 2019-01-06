@@ -27,4 +27,8 @@
     <string name="facebook_application_id" translatable="false">272135803462750</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb272135803462750</string>
     <string name="login">Login</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="type_your_preperation_here">Type your preperation here</string>
 </resources>

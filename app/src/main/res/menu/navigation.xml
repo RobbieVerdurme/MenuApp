@@ -4,11 +4,14 @@
     <item
             android:id="@+id/navigation_decider"
             android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/food_decider"/>
+            android:title="@string/food_decider"
+            android:checked="true"/>
 
     <item
             android:id="@+id/navigation_recipeList"
             android:icon="@drawable/ic_dashboard_black_24dp"
             android:title="@string/recipe_list"/>
+    <item android:title="@string/login" android:id="@+id/navigation_login"
+          android:icon="@drawable/fui_ic_anonymous_white_24dp"/>
 
 </menu>

@@ -8,13 +8,11 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
@@ -27,16 +25,14 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
 import com.example.boeferrob.menuapp.ui.FoodActivityViewModel
 import com.example.boeferrob.menuapp.utils.*
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.common.api.ApiException
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_foodactivity.*
-import kotlinx.android.synthetic.main.dialog_ingredient.view.*
 import kotlinx.android.synthetic.main.item_add_ingredient_list.*
 
 class FoodActivity : AppCompatActivity() {
     /************************************************variablen*********************************************************/
     private var foodPosition = POSITION_NOT_SET
+    private var logedin = POSITION_NOT_SET
     private var swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
     private lateinit var  deleteIcon: Drawable
     private lateinit var food: Food
@@ -46,6 +42,9 @@ class FoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
+        toolbar.setLogo(R.drawable.menu_logo_navbar)
+        toolbar.titleMarginStart = 50
+        setSupportActionBar(toolbar)
 
         //create viewmodel
         foodActivityViewModel = ViewModelProviders.of(this).get(FoodActivityViewModel::class.java)
@@ -53,6 +52,7 @@ class FoodActivity : AppCompatActivity() {
         //food position in the list
         foodPosition = savedInstanceState?.getInt(FOOD_POSITION, POSITION_NOT_SET)?:intent.getIntExtra(FOOD_POSITION,
             POSITION_NOT_SET)
+        logedin = intent.getIntExtra(LOGIN, POSITION_NOT_SET)
 
         //get food from list
         if(foodPosition != POSITION_NOT_SET){
@@ -187,6 +187,7 @@ class FoodActivity : AppCompatActivity() {
             foodActivityViewModel.saveFood(food)
 
             val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra(LOGIN, logedin)
             startActivity(intent)
         }
     }
@@ -205,7 +206,7 @@ class FoodActivity : AppCompatActivity() {
 
     private fun checkRequiredFieldsIngredient(txtName: TextView, txtquantity: TextView): Boolean{
         if(txtName.text.toString().trim().isBlank() or txtquantity.toString().trim().isBlank()){
-            Toast.makeText(this, "Fill in the textfields before adding an ingredient", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, R.string.checkIngredientFields, Toast.LENGTH_LONG).show()
             return false
         }
         return true

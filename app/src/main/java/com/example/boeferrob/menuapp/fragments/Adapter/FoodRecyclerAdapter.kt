@@ -15,8 +15,9 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
 import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
 import com.example.boeferrob.menuapp.utils.FOOD_POSITION
+import com.example.boeferrob.menuapp.utils.LOGIN
 
-class FoodRecyclerAdapter(private val context : Context, private var food: ArrayList<Food>, private  val viewModel: FoodListFragmentViewModel) : Filterable, RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(){
+class FoodRecyclerAdapter(private val context : Context, private var food: ArrayList<Food>, private  val viewModel: FoodListFragmentViewModel, private val logedin:Int) : Filterable, RecyclerView.Adapter<FoodRecyclerAdapter.ViewHolder>(){
 
     /************************************************variablen*********************************************************/
     private val layoutInflater = LayoutInflater.from(context)
@@ -110,6 +111,7 @@ class FoodRecyclerAdapter(private val context : Context, private var food: Array
             itemView.setOnClickListener{
                 val intent = Intent(context, FoodActivity::class.java)
                 val index = food.indexOf(filterListResult[adapterPosition])
+                intent.putExtra(LOGIN, logedin)
                 intent.putExtra(FOOD_POSITION, index)
                 context.startActivity(intent)
             }

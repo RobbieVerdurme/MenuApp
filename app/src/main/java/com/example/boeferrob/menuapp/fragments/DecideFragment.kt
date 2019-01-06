@@ -37,7 +37,7 @@ class DecideFragment : BaseFragment() {
         lblMenu.setOnClickListener {
             val index = decideViewModel.getFoodIndex()
             if (index == POSITION_NOT_SET){
-                Toast.makeText(activity,"Click the decide button to choose food", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,R.string.click_decide_choose_food, Toast.LENGTH_LONG).show()
             }else{
                 val intent = Intent(activity, FoodActivity::class.java)
                 intent.putExtra(FOOD_POSITION, index)
@@ -79,7 +79,7 @@ class DecideFragment : BaseFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(logedin: Int) =
             DecideFragment().apply {
                 arguments = Bundle().apply {
                 }

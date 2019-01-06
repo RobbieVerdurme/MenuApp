@@ -17,11 +17,14 @@
     <string name="pleaseAddIngredient">"click on the add button to add an ingredient"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_of_the_food">Description of the food</string>
     <string name="title_of_the_food">Title of the food</string>
+    <string name="checkIngredientFields">Fill in the textfields before adding an ingredient</string>
+    <string name="offline">You\'re offline. Please connect to synchronize the recipes</string>
+    <string name="click_decide_choose_food">"Click the decide button to choose food"</string>
 
     <!-- facebook login -->
     <string name="facebook_application_id" translatable="false">272135803462750</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb272135803462750</string>
+    <string name="login">Login</string>
 </resources>

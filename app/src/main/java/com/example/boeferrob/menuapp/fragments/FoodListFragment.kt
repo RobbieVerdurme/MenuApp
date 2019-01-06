@@ -5,12 +5,10 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -27,6 +25,7 @@ import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.activities.FoodActivity
 import com.example.boeferrob.menuapp.fragments.Adapter.FoodRecyclerAdapter
 import com.example.boeferrob.menuapp.ui.FoodListFragmentViewModel
+import com.example.boeferrob.menuapp.utils.LOGIN
 import com.example.boeferrob.menuapp.utils.POSITION_NOT_SET
 import kotlinx.android.synthetic.main.fragment_food_list.*
 
@@ -34,10 +33,12 @@ class FoodListFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var foodListFragmentViewModel: FoodListFragmentViewModel
+    private var logedin = POSITION_NOT_SET
 
     /************************************************Override**********************************************************/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         foodListFragmentViewModel = ViewModelProviders.of(activity!!).get(FoodListFragmentViewModel::class.java)
+        logedin = arguments?.getInt(LOGIN)?: POSITION_NOT_SET
         return inflater.inflate(R.layout.fragment_food_list, container, false)
     }
 
@@ -51,6 +52,7 @@ class FoodListFragment : BaseFragment() {
 
         fab.setOnClickListener{
             val activityIntent = Intent(activity, FoodActivity::class.java)
+            activityIntent.putExtra(LOGIN, logedin)
             startActivity(activityIntent)
         }
 
@@ -93,9 +95,9 @@ class FoodListFragment : BaseFragment() {
     }
     /************************************************Methods***********************************************************/
     private fun configureRecylcerView(){
-        val adapter = FoodRecyclerAdapter(activity!!, foodListFragmentViewModel.getFoodList().value as ArrayList<Food>, foodListFragmentViewModel)
+        val adapter = FoodRecyclerAdapter(activity!!, foodListFragmentViewModel.getFoodList().value as ArrayList<Food>, foodListFragmentViewModel, logedin)
         val layoutManager = LinearLayoutManager(activity)
-        val swipeBackground: ColorDrawable = ColorDrawable(Color.parseColor("#FF0000"))
+        val swipeBackground: ColorDrawable = ColorDrawable(resources.getColor(R.color.colorAccent))
         val  deleteIcon: Drawable = ContextCompat.getDrawable(activity!!,R.drawable.ic_delete_black_24dp)!!
 
         foodListFragmentViewModel.getFoodList().observe(this, Observer<List<Food>> {adapter.setData(it!!)})
@@ -160,9 +162,10 @@ class FoodListFragment : BaseFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(logedin: Int) =
             FoodListFragment().apply {
                 arguments = Bundle().apply {
+                    putInt(LOGIN, logedin)
                 }
             }
     }

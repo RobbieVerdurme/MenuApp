@@ -3,4 +3,6 @@
 
     <item android:title="@string/save" android:id="@+id/action_save" android:icon="@android:drawable/ic_menu_save"
           app:showAsAction="ifRoom|withText"/>
+    <item android:title="@string/edit" app:showAsAction="ifRoom|withText" android:icon="@android:drawable/ic_menu_edit"
+          android:id="@+id/action_edit"/>
 </menu>

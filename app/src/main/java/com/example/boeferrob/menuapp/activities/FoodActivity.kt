@@ -9,8 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.Ingredient
@@ -25,6 +23,7 @@ class FoodActivity : AppCompatActivity(), FoodDetailFragment.OnFragmentInteracti
     private var foodPosition = POSITION_NOT_SET
     private var logedin = POSITION_NOT_SET
     private lateinit var food: Food
+    private var edit = false
     lateinit var foodActivityViewModel: FoodActivityViewModel
 
     /************************************************Override**********************************************************/
@@ -44,40 +43,11 @@ class FoodActivity : AppCompatActivity(), FoodDetailFragment.OnFragmentInteracti
         //see if you're logged on
         logedin = intent.getIntExtra(LOGIN, POSITION_NOT_SET)
 
-        //get food from list
-        if(foodPosition != POSITION_NOT_SET){
-            food = foodActivityViewModel.getFood(foodPosition)
-        }else {
-            food = Food("","", ArrayList<Ingredient>(), "","")
-        }
+        //see if you edit food
+        edit = intent.getBooleanExtra(EDIT,false)
 
-        viewpager_food.adapter = object : FragmentPagerAdapter(supportFragmentManager){
-            override fun getItem(p0: Int): Fragment {
-                when(p0){
-                    BaseFragmentFood.DETAIL -> return FoodDetailFragment.newInstance(food)
-                    BaseFragmentFood.INGREDIENTS -> return FoodIngredientFragment.newInstance(food)
-                    BaseFragmentFood.PREPERATION -> return FoodPreperationFragment.newInstance(food)
-                }
-                return FoodDetailFragment()
-            }
-
-            override fun getCount(): Int {
-                return 3
-            }
-
-            override fun getPageTitle(position: Int): CharSequence? {
-                when(position){
-                    0 -> return "Detail"
-                    1 -> return "Ingredients"
-                    2 -> return "Preperation"
-                    else -> return "Page not Found"
-                }
-            }
-        }
-
-        tabLayoutFood.setupWithViewPager(viewpager_food)
-
-
+        getFood()
+        configureViewpager()
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -85,6 +55,10 @@ class FoodActivity : AppCompatActivity(), FoodDetailFragment.OnFragmentInteracti
         outState?.putInt(FOOD_POSITION, foodPosition)
     }
 
+    override fun onPause() {
+        super.onPause()
+        edit = false
+    }
 
     //menu
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -97,6 +71,21 @@ class FoodActivity : AppCompatActivity(), FoodDetailFragment.OnFragmentInteracti
         when(id){
             R.id.action_save -> {
                 saveFood()
+                edit = false
+            }
+            R.id.action_edit -> {
+                edit = true
+                val adapter: FragmentPagerAdapter = viewpager_food.adapter as FragmentPagerAdapter
+                val fragments: List<Fragment?> = listOf(BaseFragmentFood.detail, BaseFragmentFood.ingredients, BaseFragmentFood.preperation)//adapter.getItem(0), adapter.getItem(1), adapter.getItem(2))
+                val bundle = Bundle()
+
+                bundle.putBoolean(EDIT, edit)
+                bundle.putSerializable(SELECTEDFOOD, food)
+
+                for (fragment in fragments) {
+                    fragment?.arguments = bundle
+                }
+                adapter.notifyDataSetChanged()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -137,5 +126,51 @@ class FoodActivity : AppCompatActivity(), FoodDetailFragment.OnFragmentInteracti
         }else{
             Toast.makeText(this,"Fill in a name for the food",Toast.LENGTH_LONG).show()
         }
+    }
+    private fun getFood(){
+        //get food from list
+        if(foodPosition != POSITION_NOT_SET){
+            food = foodActivityViewModel.getFood(foodPosition)
+        }else {
+            food = Food("","", ArrayList<Ingredient>(), "","")
+        }
+    }
+
+    private fun configureViewpager(){
+        viewpager_food.adapter = object : FragmentPagerAdapter(supportFragmentManager){
+            override fun getItem(p0: Int): Fragment {
+                when(p0){
+                    BaseFragmentFood.DETAIL ->{
+                        BaseFragmentFood.detail = FoodDetailFragment.newInstance(food,edit)
+                        return BaseFragmentFood.detail!!
+                    }
+                    BaseFragmentFood.INGREDIENTS -> {
+                        BaseFragmentFood.ingredients = FoodIngredientFragment.newInstance(food, edit)
+                        return BaseFragmentFood.ingredients!!
+                    }
+                    BaseFragmentFood.PREPERATION -> {
+                        BaseFragmentFood.preperation = FoodPreperationFragment.newInstance(food, edit)
+                        return BaseFragmentFood.preperation!!
+                    }
+                }
+                return FoodDetailFragment()
+            }
+
+            override fun getCount(): Int {
+                return 3
+            }
+
+            override fun getPageTitle(position: Int): CharSequence? {
+                when(position){
+                    0 -> return "Detail"
+                    1 -> return "Ingredients"
+                    2 -> return "Preperation"
+                }
+                return "Page not Found"
+            }
+
+        }
+
+        tabLayoutFood.setupWithViewPager(viewpager_food)
     }
 }

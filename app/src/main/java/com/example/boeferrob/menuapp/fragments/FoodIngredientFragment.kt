@@ -2,13 +2,10 @@ package com.example.boeferrob.menuapp.fragments
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.nfc.Tag
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +21,7 @@ import com.example.boeferrob.menuapp.Food
 import com.example.boeferrob.menuapp.Ingredient
 import com.example.boeferrob.menuapp.R
 import com.example.boeferrob.menuapp.fragments.Adapter.IngredientRecyclerAdapter
+import com.example.boeferrob.menuapp.utils.EDIT
 import com.example.boeferrob.menuapp.utils.MESUREMENTLIST
 import com.example.boeferrob.menuapp.utils.SELECTEDFOOD
 import kotlinx.android.synthetic.main.fragment_food_ingredient.*
@@ -34,22 +32,33 @@ class FoodIngredientFragment : BaseFragment() {
     /************************************************variablen*********************************************************/
     private lateinit var chosenFood: Food
     private var listener: OnFragmentInteractionListener? = null
+    private var edit = false
 
     /************************************************Override**********************************************************/
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            chosenFood = it.getSerializable(SELECTEDFOOD) as Food
-        }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_food_ingredient, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.let {
+            chosenFood = it.getSerializable(SELECTEDFOOD) as Food
+            edit = it.getBoolean(EDIT)
+        }
+
         displayIngredients()
+
+        if(edit){
+            listFoodIngredients.isEnabled = true
+            include_Add_Ingredient.isEnabled = true
+            include_Add_Ingredient.visibility = View.VISIBLE
+            println("...........................................visable")
+        }else{
+            include_Add_Ingredient.isEnabled = false
+            include_Add_Ingredient.visibility = View.INVISIBLE
+            listFoodIngredients.isEnabled = false
+            println("...........................................invisiavble")
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -130,11 +139,15 @@ class FoodIngredientFragment : BaseFragment() {
                 c.restore()
                 super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
+
+            override fun isItemViewSwipeEnabled(): Boolean {
+                return edit
+            }
         }
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
         itemTouchHelper.attachToRecyclerView(listFoodIngredients)
 /////////////////// add ingredient
-        spinnerMesurement.adapter = ArrayAdapter(activity, R.layout.support_simple_spinner_dropdown_item, MESUREMENTLIST)
+        spinnerMesurement.adapter = ArrayAdapter(activity!!, R.layout.support_simple_spinner_dropdown_item, MESUREMENTLIST)
         imgAddIngredient.setOnClickListener {
             //check if fields are filled in
             if(checkRequiredFieldsIngredient(txtName, txtQuantity)){
@@ -173,10 +186,11 @@ class FoodIngredientFragment : BaseFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(food: Food) =
+        fun newInstance(food: Food, edit: Boolean) =
             FoodIngredientFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(SELECTEDFOOD, food)
+                    putBoolean(EDIT, edit)
                 }
             }
     }

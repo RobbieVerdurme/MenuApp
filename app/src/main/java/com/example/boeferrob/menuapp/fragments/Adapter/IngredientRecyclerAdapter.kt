@@ -78,7 +78,7 @@ class IngredientRecyclerAdapter(private val context : Context, private  val ingr
 
                     mDialogView.btnSaveIngredient.setOnClickListener {
                         ingredient.name = mDialogView.txtNameIngredient.text.toString()
-                        ingredient.quantity = mDialogView.txtquantity.text.toString().toInt()
+                        ingredient.quantity = mDialogView.txtquantity.text.toString()
                         ingredient.measurement = mDialogView.spinnerMeasurement.selectedItem.toString()
                         mAlertDialog.dismiss()
                         notifyDataSetChanged()

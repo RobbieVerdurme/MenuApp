@@ -142,7 +142,7 @@ class FoodIngredientFragment : BaseFragment() {
                 chosenFood.ingredients.add(
                     Ingredient(
                         txtName.text.toString(),
-                        txtQuantity.text.toString().toInt(),
+                        txtQuantity.text.toString(),
                         spinnerMesurement.selectedItem.toString())
                 )
                 adapter.notifyDataSetChanged()

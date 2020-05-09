@@ -1,5 +1,5 @@
 ## :heavy_exclamation_mark: Application is no langer supported :heavy_exclamation_mark:
-:heavy_exclamation_mark: app no langer working becaouse of some backend changes
+:heavy_exclamation_mark: app no langer working because of some backend changes
 
 
 # MenuApp

@@ -1,5 +1,6 @@
 ## :heavy_exclamation_mark: Application is no langer supported :heavy_exclamation_mark:
-:heavy_exclamation_mark: app no langer working because of some backend changes
+:heavy_exclamation_mark: app no langer working because of some backend changes.
+> For an alternitive you can look at the [PWA](https://github.com/RobbieVerdurme/MenuApp_PWA) of the app or the [V2](https://github.com/RobbieVerdurme/MenuAppV2) of the app
 
 
 # MenuApp
